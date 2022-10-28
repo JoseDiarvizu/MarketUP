@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>Market UP</title>
+</head>
+
+<body>
+  <nav>
+    <h4>Market UP</h4>
+    <ul>
+      {{#if user }}
+      <li>
+        <form id="searchForm" action="/auth/showposts" method="POST">
+          <input type="hidden" class="form-control" id="userId" name="userId" value={{user.id}}/>
+          <input type="text" class="form-control" id="title" name="postName" />
+        </form>
+      </li>
+      <li><button class="btn btn-secondary" form="searchForm"><i class="fa fa-search"></i></button>
+      </li>
+      <li><a href="/">Inicio</a></li>
+      <li><a href="/posts">Publicar</a></li>
+      <li><a href="/profile">Perfil</a></li>
+      <li><a href="/auth/logout">Salir</a></li>
+
+      {{else}}
+      <li><a href="/">Inicio</a></li>
+      <li><a href="/login">Iniciar sesión</a></li>
+      <li><a href="/register">Registro</a></li>
+      {{/if}}
+    </ul>
+  </nav>
+
+  <div class="container mt-4">
+    {{#if user}}
+    <div class="row">
+      <div class="col-8">
+        <div class="containers text-center">
+          {{#each posts}}
+          <div class="card child mb-5">
+            <img class="card-img-top" src={{this.image}} alt="Card image cap">
+            <div class="card-body">
+              <h3 class="card-title">{{this.postName}}</h3>
+              <hr class="my-4">
+
+              <p class="lead">{{this.description}}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item lead font-italic">{{this.email}}</li>
+              <li class="list-group-item text-muted">${{this.price}}</li>
+            </ul>
+            {{#difCond this.userId ../user.id}}
+            <div class="card-body">
+              <a href="#" class="card-link">Favoritos</a>
+              <a href="#" class="card-link">Ver más</a>
+            </div>
+            {{/difCond}}
+          </div>
+          {{/each}}
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="jumbotron">
+          <h1 class="display-4">Bienvenido a Market UP</h1>
+          <p class="lead">Aquí podrás compartir los materiales que ya no utilices, o encontrar los que sean de tu
+            interés
+          </p>
+          <hr class="my-4">
+          <p>¡Bienvenido! ¿Ya revisaste tu perfil?</p>
+          <a class="btn btn-primary btn-lg" href="/profile" role="button">Ver mi perfil</a>
+        </div>
+      </div>
+    </div>
+    {{else}}
+    <div class="jumbotron">
+      <h1 class="display-4">Market UP</h1>
+      <p class="lead">Aquí podrás compartir los materiales que ya no utilices, o encontrar los que sean de tu
+        interés</p>
+      <hr class="my-4">
+      <p>Si no tienes una cuenta, ¡regístrate aquí!</p>
+      <a class="btn btn-primary btn-lg" href="/register" role="button">Registro</a>
+    </div>
+    {{/if}}
+  </div>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
